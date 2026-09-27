@@ -1,8 +1,6 @@
 # insert, select, update, delete
 from .table import validate_record
-
-def matches_criteria(row, criteria):
-    return all(row.get(k) == v for k, v in criteria.items())
+from .query import matches
 
 def insert_record(db, table_name, record):
     table = db["tables"].get(table_name)
@@ -18,14 +16,14 @@ def select_records(db, table_name, criteria=None):
         raise ValueError(f"Table '{table_name}' does not exist.")
     if criteria is None:
         return table["rows"]
-    return [row for row in table["rows"] if matches_criteria(row, criteria)]
+    return [row for row in table["rows"] if matches(row, criteria)]
 
 def update_records(db, table_name, criteria, updates):
     table = db["tables"].get(table_name)
     if not table:
         raise ValueError(f"Table '{table_name}' does not exist.")
     for row in table["rows"]:
-        if matches_criteria(row, criteria):
+        if matches(row, criteria):
             for k, v in updates.items():
                 if k in table["schema"]:
                     row[k] = v
@@ -38,7 +36,7 @@ def delete_records(db, table_name, criteria):
     if not table:
         raise ValueError(f"Table '{table_name}' does not exist.")
     original_count = len(table["rows"])
-    table["rows"] = [row for row in table["rows"] if not matches_criteria(row, criteria)]
+    table["rows"] = [row for row in table["rows"] if not matches(row, criteria)]
     deleted_count = original_count - len(table["rows"])
     return deleted_count
 
