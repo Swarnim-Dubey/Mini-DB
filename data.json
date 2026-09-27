@@ -1,0 +1,26 @@
+{
+    "tables": {
+        "student": {
+            "schema": {
+                "id": "int",
+                " name": "str",
+                " age": "int"
+            },
+            "rows": []
+        },
+        "system": {
+            "schema": {
+                "id": "int",
+                "name": "str",
+                "age": "int"
+            },
+            "rows": [
+                {
+                    "id": 1,
+                    "name": "User1",
+                    "age": 40
+                }
+            ]
+        }
+    }
+}
